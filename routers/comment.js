@@ -12,14 +12,6 @@ router.get("/:postId/comment", commentController.getComments);
 // router.post("/:postId/comment", isAuth, commentController.createComment);
 router.post("/:postId/comment", commentController.createComment);
 
-//PUT /comment/:commentId
-// router.put(
-//   "/:postId/comment/:commentId",
-//   isAuth,
-//   commentController.updateComment
-// );
-router.put("/:postId/comment/:commentId", commentController.updateComment);
-
 //DELETE /comment/:commentId
 // router.delete(
 //   "/:postId/comment/:commentId",
@@ -28,5 +20,6 @@ router.put("/:postId/comment/:commentId", commentController.updateComment);
 // );
 router.delete("/:postId/comment/:commentId", commentController.deleteComment);
 
+//일단 post만드는 router
 router.post("/", postController.createPost);
 export default router;

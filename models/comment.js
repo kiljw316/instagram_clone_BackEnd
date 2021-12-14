@@ -14,21 +14,41 @@ export async function get(post_id) {
   }
 }
 
-export function create(post_id, commentObj) {
-  return Post.updateOne(
-    { _id: post_id },
-    { $push: { comments: commentObj } }
-  ).exec();
+export async function create({ postId, commentObj }) {
+  try {
+    const comment = await Comment.create(commentObj);
+    return Post.updateOne(
+      { _id: postId },
+      { $push: { comments: comment } }
+    ).exec();
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 }
 
-export function update(commentId, comment) {
-  return Comment.findByIdAndUpdate(
-    commentId,
-    { comment },
-    { returnOriginal: false }
+// export function update({postId, commentObj}) {
+//   const { comment, commentId } = commentObj;
+//   return Post.updateOne(
+//     { _id: postId, "comments._id": commentId },
+//     { $set: { "comments.$.comment": comment } }
+//   ).exec();
+//   //   return Comment.findByIdAndUpdate(
+//   //     commentId,
+//   //     { comment },
+//   //     { returnOriginal: false }
+//   //   );
+// }
+export function remove({ postId, commentId }) {
+  return Post.findByIdAndUpdate(
+    postId,
+    {
+      $pull: { comments: { _id: commentId } },
+    },
+    { new: true }
   );
 }
 
-export function remove(commentId) {
-  return Comment.findByIdAndDelete(commentId);
-}
+// export function remove(commentId) {
+//   return Comment.findByIdAndDelete(commentId);
+// }
