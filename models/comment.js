@@ -1,12 +1,12 @@
 import Comment from "../schemas/comment.js";
 import Post from "../schemas/post.js";
 
-export async function get(post_id) {
+export async function get(postId) {
   // 성진님 post하나 찾는거 만든걸로 이용해서 만들자
   //    ex) import {getByPostId} from "../models/post.js"
-  //    ex) await getByPostId(post_id)
+  //    ex) await getByPostId(postId)
   try {
-    const post = await Post.findById(post_id).exec();
+    const post = await Post.findById(postId).exec();
     return post.comments;
   } catch (error) {
     console.log(error);

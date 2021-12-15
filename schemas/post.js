@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const postSchema = new mongoose.Schema(
   {
     content: { type: String, required: true },
-    user_id: { type: String, required: true },
+    userId: { type: String, required: true },
     comments: { type: Array },
   },
   { timestamps: true }

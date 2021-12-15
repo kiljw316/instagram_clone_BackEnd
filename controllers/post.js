@@ -25,10 +25,10 @@ import * as fundingService from "../models/post.js";
 export async function createPost(req, res, next) {
   try {
     const { content } = req.body;
-    const user_id = "1";
+    const userId = "1";
     await fundingService.create({
       content,
-      user_id,
+      userId,
     });
     res.sendStatus(201);
   } catch (error) {

@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema(
   {
     comment: { type: String, required: true },
-    user_id: { type: String, required: true },
+    userId: { type: String, required: true, unique: true },
   },
   { timestamps: true }
 );
