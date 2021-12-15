@@ -1,5 +1,5 @@
 import express from "express";
-import posts from "../controllers/posts.js"
+import posts from "../controllers/posts.js";
 // import itemRouter from "./item.js";
 // import commentRouter from "./comment.js";
 // import userRouter from "./user.js";
