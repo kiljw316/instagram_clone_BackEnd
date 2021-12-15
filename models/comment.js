@@ -1,5 +1,6 @@
 import Comment from "../schemas/comment.js";
 import Post from "../schemas/post.js";
+import { objectIdChange } from "../utils/typeChange.js";
 
 export async function get(postId) {
   // 성진님 post하나 찾는거 만든걸로 이용해서 만들자
@@ -10,7 +11,7 @@ export async function get(postId) {
     return post.comments;
   } catch (error) {
     console.log(error);
-    return error;
+    throw new Error(error);
   }
 }
 
@@ -23,32 +24,36 @@ export async function create({ postId, commentObj }) {
     ).exec();
   } catch (error) {
     console.log(error);
-    return error;
+    throw new Error(error);
   }
 }
 
-// export function update({postId, commentObj}) {
-//   const { comment, commentId } = commentObj;
-//   return Post.updateOne(
-//     { _id: postId, "comments._id": commentId },
-//     { $set: { "comments.$.comment": comment } }
-//   ).exec();
-//   //   return Comment.findByIdAndUpdate(
-//   //     commentId,
-//   //     { comment },
-//   //     { returnOriginal: false }
-//   //   );
-// }
-export function remove({ postId, commentId }) {
-  return Post.findByIdAndUpdate(
-    postId,
-    {
-      $pull: { comments: { _id: commentId } },
-    },
-    { new: true }
-  );
+export async function remove({ postId, commentId }) {
+  //   try {
+  //     const post = await Post.findById(postId);
+  //     console.log(post);
+  //     return post.comments.pull({ comment: "comment1" });
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  //   //   되는 케이스
+  //   try {
+  //     return Post.updateOne(
+  //       { _id: postId },
+  //       { $pull: { comments: { _id: new mongoose.mongo.ObjectId(commentId) } } }
+  //     ).exec();
+  //   } catch (error) {
+  //     throw new Error(error);
+  //   }
+  try {
+    return Post.findOneAndUpdate(
+      { _id: postId },
+      {
+        //   type변경 안하는 방법 없나
+        $pull: { comments: { _id: objectIdChange(commentId) } },
+      }
+    );
+  } catch (error) {
+    throw new Error(error);
+  }
 }
-
-// export function remove(commentId) {
-//   return Comment.findByIdAndDelete(commentId);
-// }

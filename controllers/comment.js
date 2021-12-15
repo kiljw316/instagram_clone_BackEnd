@@ -11,7 +11,7 @@ export async function createComment(req, res, next) {
     const msg = "댓글 작성 완료";
     return res.status(201).json({ msg });
   } catch (error) {
-    return res.status(404);
+    return res.status(500);
   }
 }
 
@@ -24,7 +24,7 @@ export async function getComments(req, res, next) {
     return res.status(200).json({ comments });
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.sendStatus(500);
   }
 }
 
@@ -35,6 +35,6 @@ export async function deleteComment(req, res, next) {
     return res.sendStatus(204);
   } catch (error) {
     console.log(error);
-    return res.sendStatus(404);
+    return res.sendStatus(500);
   }
 }
