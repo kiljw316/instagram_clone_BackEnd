@@ -1,4 +1,5 @@
 import express from "express";
+import posts from "../controllers/posts.js";
 // import itemRouter from "./item.js";
 import userRouter from "./user.js";
 import commentRouter from "./comment.js";
@@ -6,6 +7,7 @@ import commentRouter from "./comment.js";
 
 const router = express.Router();
 
+router.use("/posts", posts);
 router.use("/posts", commentRouter);
 // router.use("/item", commentRouter);
 router.use("/auth", userRouter);
