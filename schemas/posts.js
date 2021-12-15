@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const boardSchema = new mongoose.Schema({
+const posts = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
@@ -18,4 +18,4 @@ const boardSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("boards", boardSchema);
+export default mongoose.model("posts", posts);
