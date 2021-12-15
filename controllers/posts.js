@@ -1,5 +1,6 @@
 import express from "express";
 import { addPost, readAllPost, deletePost, readPost } from "../models/posts.js";
+import { pushLikes, readAllLikes, cancleLikes, existLikes } from "../models/likes.js";
 
 const router = express.Router();
 
@@ -48,5 +49,26 @@ router
       res.status(400);
     }
   });
+
+router.route("/:postId/like").post(async (req, res) => {
+  try {
+    // const userId = res.locals;
+    const postId = req.params.postId;
+    const { userId } = req.body;
+    const existLike = await existLikes({ userId, postId });
+    console.log(existLike);
+    if (!existLike) {
+      await pushLikes({ userId, postId });
+      res.status(200).json({ msg: "좋아요!" });
+      return;
+    } else {
+      await cancleLikes({ userId, postId });
+      res.status(200).json({ msg: "별로에요!" });
+      return;
+    }
+  } catch {
+    res.status(400);
+  }
+});
 
 export default router;

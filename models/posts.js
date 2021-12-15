@@ -24,7 +24,7 @@ export const deletePost = async (postId) => {
       return false;
     }
     return result;
-  } catch (err) {
+  } catch {
     return false;
   }
 };

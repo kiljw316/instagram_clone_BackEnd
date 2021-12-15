@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import likes from "./likes.js";
 
 const posts = new mongoose.Schema({
   userId: {
