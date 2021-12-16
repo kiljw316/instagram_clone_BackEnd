@@ -1,35 +1,18 @@
 import * as userModel from "../models/user.js";
+import { registerValidate } from "../utils/userValidate.js";
 import bcrypt from "bcrypt";
-
-const emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-const nickanmeRegEx = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}$/;
-const pwRegEx = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+import jwt from "jsonwebtoken";
+import passport from "passport";
 
 //회원 가입
 export async function register(req, res) {
   try {
     const { email, nickname, pw } = req.body;
-    if (!emailRegEx.test(email)) {
-      return res.status(400).json({
-        code: 400,
-        msg: "이메일 형식과 맞지 않습니다.",
-      });
-    }
 
-    if (!nickanmeRegEx.test(nickname)) {
-      return res.status(400).json({
-        code: 400,
-        msg: "닉네임 형식과 맞지 않습니다.",
-      });
-    }
+    //회원 가입 형식 확인 -> 실패 시 에러 생성
+    registerValidate(req.body);
 
-    if (!pwRegEx.test(pw)) {
-      return res.status(400).json({
-        code: 400,
-        msg: "비밀번호 형식과 맞지 않습니다.",
-      });
-    }
-
+    //email, nick, pw validate 전부 통과하면
     if (await userModel.isExisted(email, nickname)) {
       return res.status(400).json({
         code: 400,
@@ -37,13 +20,65 @@ export async function register(req, res) {
       });
     }
 
+    //비밀번호 해싱
     const hashPw = await bcrypt.hash(pw, 10);
+
+    //유저 생성
     await userModel.createUser(email, hashPw, nickname);
+
     return res.status(201).json({
       code: 201,
       msg: "회원가입 성공",
     });
   } catch (err) {
+    return res.status(400).json({
+      code: 400,
+      msg: err.message
+    });
+  }
+}
+
+//로그인
+export async function login(req, res) {
+  try {
+    passport.authenticate("local", (error, user, info) => {
+      // 유저의 존재여부 확인
+
+      if (error || !user) {
+        return res.status(400).json({
+          code: 400,
+          msg: info.msg,
+        });
+      }
+      // 유저가 있는 경우
+      req.login(user, { session: false }, (loginError) => {
+        if (loginError) {
+          return res.send(loginError);
+        }
+        // 로그인 성공인 경우 ,JWT토큰 생성 및 반환
+        const token = jwt.sign(
+          {
+            _id: user._id,
+            nickname: user.nickname,
+          },
+          "instagram"
+        );
+        return res.status(200).json({
+          code: 200,
+          msg: "로그인 성공",
+          token,
+        });
+      });
+    })(req, res);
+  } catch (err) {
     console.error(err);
+  }
+}
+
+export async function me(req, res) {
+  try {
+    res.status(200).json(req.user);
+  } catch (err) {
+    console.log(err);
   }
 }
