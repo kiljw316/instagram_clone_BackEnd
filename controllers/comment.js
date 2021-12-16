@@ -15,8 +15,6 @@ export async function createComment(req, res, next) {
 }
 
 export async function getComments(req, res, next) {
-  //Todo
-  //날짜순으로 sorting 해야함
   const { postId } = req.params;
   try {
     const comments = await commentRepository.get(postId);
