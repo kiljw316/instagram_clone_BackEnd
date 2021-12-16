@@ -1,27 +1,29 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 const userSchema = new Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    nickname: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    pw: {
-        type: String,
-        required: true,
-    },
-    profileImg: {
-        type: String,
-        default: "/profile.png"
-    }
-}, {
-    timestamps: true,
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  nickname: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  pw: {
+    type: String,
+    required: true,
+  },
+  profileImg: {
+    type: String,
+    default: "/profile.png",
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
 });
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model("User", userSchema);
