@@ -18,7 +18,7 @@ router.post("/:postId/comment", verifyToken, commentController.createComment);
 //   isAuth,
 //   commentController.deleteComment
 // );
-router.delete("/:postId/comment/:commentId", verifyToken, commentController.deleteComment);
+router.post("/:postId/comment/:commentId", verifyToken, commentController.deleteComment);
 
 //일단 post만드는 router
 // router.post("/", verifyToken(), postController.createPost);
