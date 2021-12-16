@@ -9,7 +9,8 @@ export async function register(req, res) {
   try {
     const { email, nickname, pw } = req.body;
 
-    registerValidate(req.body, res);
+    //회원 가입 형식 확인 -> 실패 시 에러 생성
+    registerValidate(req.body);
 
     //email, nick, pw validate 전부 통과하면
     if (await userModel.isExisted(email, nickname)) {
@@ -30,7 +31,10 @@ export async function register(req, res) {
       msg: "회원가입 성공",
     });
   } catch (err) {
-    console.error(err);
+    return res.status(400).json({
+      code: 400,
+      msg: err.message
+    });
   }
 }
 
@@ -39,7 +43,7 @@ export async function login(req, res) {
   try {
     passport.authenticate("local", (error, user, info) => {
       // 유저의 존재여부 확인
-      
+
       if (error || !user) {
         return res.status(400).json({
           code: 400,

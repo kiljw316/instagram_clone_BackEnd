@@ -14,27 +14,18 @@ const passwordValidate = (pw) => {
     return passwordRegEx.test(pw);
 }
 
-export const registerValidate = ((userInfo, res) => {
+export const registerValidate = (userInfo => {
     const {email, nickname, pw } = userInfo;
     if (!emailValidate(email)) {
-        return res.status(400).json({
-          code: 400,
-          msg: "이메일 형식과 맞지 않습니다.",
-        });
+        throw new Error("이메일 형식과 맞지 않습니다.");
       }
     
       if (!nicknameValidate(nickname)) {
-        return res.status(400).json({
-          code: 400,
-          msg: "닉네임 형식과 맞지 않습니다.",
-        });
+        throw new Error("닉네임 형식과 맞지 않습니다.");
       }
     
       if (!passwordValidate(pw)) {
-        return res.status(400).json({
-          code: 400,
-          msg: "비밀번호 형식과 맞지 않습니다.",
-        });
+        throw new Error("패스워드 형식과 맞지 않습니다.");
       }
 })
 
