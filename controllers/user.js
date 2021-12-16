@@ -58,7 +58,7 @@ export async function login(req, res) {
         // 로그인 성공인 경우 ,JWT토큰 생성 및 반환
         const token = jwt.sign(
           {
-            id: user._id,
+            _id: user._id,
             nickname: user.nickname,
           },
           "instagram"
@@ -72,5 +72,13 @@ export async function login(req, res) {
     })(req, res);
   } catch (err) {
     console.error(err);
+  }
+}
+
+export async function me(req, res) {
+  try {
+    res.status(200).json(req.user);
+  } catch (err) {
+    console.log(err);
   }
 }

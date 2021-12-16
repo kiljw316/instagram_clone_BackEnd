@@ -1,6 +1,6 @@
 const emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
-const nicknameRegEx = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,}$/;
-const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,20}$/;
+const nicknameRegEx = /^[가-힣ㄱ-ㅎa-zA-Z0-9._ -]{2,10}$/;
+const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?&])[A-Za-z\d$@!%*#?&]{8,20}$/;
 
 const emailValidate = (email) => {
     return emailRegEx.test(email);
