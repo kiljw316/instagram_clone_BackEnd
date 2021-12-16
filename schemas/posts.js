@@ -22,14 +22,23 @@ const posts = new mongoose.Schema(
   { timestamps: true }
 );
 
-posts.virtual("likeCount").get(async function () {
-  const postId = this._id.toString();
-  const count = await likes.countDocuments({ postId });
-  return count;
+
+const post = posts.virtual("likeCount").get(async function () {
+  try {
+    const postId = this._id.toHexString();
+    return await likes.countDocuments({ postId }).exec();
+  } catch(err) {
+    cosnsole.log(err);
+  }
+  // return 1
 });
 
-posts.set({
+console.log(post);
+
+posts.set("toJSON", {
   virtuals: true,
 });
 
+
 export default mongoose.model("posts", posts);
+
