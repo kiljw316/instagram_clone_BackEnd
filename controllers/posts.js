@@ -70,7 +70,7 @@ router
       res.status(400);
     }
   })
-  .delete(verifyToken, async (req, res) => {
+  .post(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
       const result = await deletePost(postId);
