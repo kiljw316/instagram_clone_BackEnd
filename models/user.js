@@ -3,7 +3,7 @@ import User from "../schemas/user.js";
 //회원 정보(id)
 export async function findById(id) {
   try {
-    return await User.findById({_id: id}, {pw: false});
+    return await User.findById({ _id: id }, { pw: false });
   } catch (err) {
     console.error(err);
   }
