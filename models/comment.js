@@ -1,6 +1,17 @@
 import Comment from "../schemas/comment.js";
 import Post from "../schemas/post.js";
+import User from "../schemas/user.js";
 import { objectIdChange } from "../utils/typeChange.js";
+
+export async function getUserId(commentId) {
+  try {
+    const comment = await Comment.findById(commentId).exec();
+    return comment.userId;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error);
+  }
+}
 
 export async function get(postId) {
   // 성진님 post하나 찾는거 만든걸로 이용해서 만들자
@@ -18,10 +29,7 @@ export async function get(postId) {
 export async function create({ postId, commentObj }) {
   try {
     const comment = await Comment.create(commentObj);
-    return Post.updateOne(
-      { _id: postId },
-      { $push: { comments: comment } }
-    ).exec();
+    return Post.updateOne({ _id: postId }, { $push: { comments: comment } }).exec();
   } catch (error) {
     console.log(error);
     throw new Error(error);

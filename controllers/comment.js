@@ -3,8 +3,7 @@ import * as commentRepository from "../models/comment.js";
 export async function createComment(req, res, next) {
   const { postId } = req.params;
   const { comment } = req.body;
-  //   const userId = res.locals.user.userId;
-  const userId = "1";
+  const userId = req.user._id;
   const commentObj = { comment, userId };
   try {
     await commentRepository.create({ postId, commentObj });
@@ -16,8 +15,6 @@ export async function createComment(req, res, next) {
 }
 
 export async function getComments(req, res, next) {
-  //Todo
-  //날짜순으로 sorting 해야함
   const { postId } = req.params;
   try {
     const comments = await commentRepository.get(postId);
@@ -29,8 +26,13 @@ export async function getComments(req, res, next) {
 }
 
 export async function deleteComment(req, res, next) {
-  const { postId, commentId } = req.params;
   try {
+    const { postId, commentId } = req.params;
+    const userId = req.user._id;
+    const userIdFromComment = await commentRepository.getUserId(commentId);
+    if (userId !== userIdFromComment) {
+      return res.sendStatus(500);
+    }
     await commentRepository.remove({ postId, commentId });
     return res.sendStatus(204);
   } catch (error) {
