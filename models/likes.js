@@ -32,7 +32,7 @@ export const cancleLikes = async ({ postId, userId }) => {
   }
 };
 
-export const readAllLikes = async (postId) => {
+export const countLikes = async (postId) => {
   try {
     const allLikes = await likes.find({ postId });
     const result = allLikes.length;

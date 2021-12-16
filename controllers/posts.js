@@ -1,6 +1,7 @@
 import express from "express";
 import { addPost, readAllPost, deletePost, readPost } from "../models/posts.js";
-import { pushLikes, readAllLikes, cancleLikes, existLikes } from "../models/likes.js";
+import { pushLikes, countLikes, cancleLikes, existLikes } from "../models/likes.js";
+// import { verifyToken } from "../middleware/middleware.js"
 import { upload } from "../middleware/uploads.js";
 
 const router = express.Router();
@@ -8,15 +9,22 @@ const router = express.Router();
 router
   .route("/")
   .get(async (req, res) => {
-    const posts = await readAllPost();
+    let posts = await readAllPost();
+    for (let i = 0; i < posts.length; i++) {
+      const postId = posts[i]["_id"].toHexString();
+      const count = await countLikes(postId);
+      posts[i].likes;
+      posts[i].likes = count;
+    }
     res.status(200).send({ posts });
   })
   .post(upload.single("file"), async (req, res) => {
     try {
       // const userId = res.locals;
-      // const { content, upload } = req.body;
-      const { upload } = req.file;
       const { userId, content } = req.body;
+      const path = req.file.path;
+      const mimetype = req.file.mimetype;
+      const upload = { path, mimetype };
       const result = await addPost({ userId, content, upload });
       if (result !== true) {
         res.status(400).send({ msg: "게시글 작성 실패" });
@@ -33,6 +41,8 @@ router
     try {
       const postId = req.params.postId;
       const result = await readPost(postId);
+      const count = await countLikes(postId);
+      result.likes = count;
       res.status(200).send({ result });
     } catch {
       res.status(400);
@@ -58,7 +68,6 @@ router.route("/:postId/like").post(async (req, res) => {
     const postId = req.params.postId;
     const { userId } = req.body;
     const existLike = await existLikes({ userId, postId });
-    console.log(existLike);
     if (!existLike) {
       await pushLikes({ userId, postId });
       res.status(200).json({ msg: "좋아요!" });

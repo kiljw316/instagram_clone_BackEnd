@@ -1,11 +1,8 @@
 import posts from "../schemas/posts.js";
 
-export const addPost = async ({ userId, content, upload }) => {
-  // const post = new posts({ userId, content, upload, comments });
-  // await post.save();
-  // return true;
+export const addPost = async ({ userId, content, upload, createdAt }) => {
   try {
-    await posts.create({ userId, content, upload });
+    await posts.create({ userId, content, upload, createdAt });
     return true;
   } catch {
     return false;
