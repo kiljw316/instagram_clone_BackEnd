@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
@@ -53,3 +54,5 @@ function passportConfig() {
 }
 
 export default passportConfig;
+=======
+>>>>>>> 2fd02612f68edb4d6c93609c63c28c576844d88d
