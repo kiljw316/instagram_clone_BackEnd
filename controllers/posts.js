@@ -1,7 +1,7 @@
 import express from "express";
 import { addPost, readAllPost, deletePost, readPost } from "../models/posts.js";
-import { pushLikes, countLikes, cancleLikes, existLikes } from "../models/likes.js";
-// import { verifyToken } from "../middleware/middleware.js"
+import { pushLikes, countLikes, cancleLikes, existLikes, usersLike } from "../models/likes.js";
+import { verifyToken } from "../middleware/middleware.js";
 import { upload } from "../middleware/uploads.js";
 
 const router = express.Router();
@@ -9,6 +9,8 @@ const router = express.Router();
 router
   .route("/")
   .get(async (req, res) => {
+    // const userId = req.user._id;
+    const userId = "test4";
     let posts = await readAllPost();
     for (let i = 0; i < posts.length; i++) {
       const postId = posts[i]["_id"].toHexString();
@@ -16,12 +18,14 @@ router
       posts[i].likes;
       posts[i].likes = count;
     }
-    res.status(200).send({ posts });
+    const userLike = await usersLike(userId);
+    // console.log(userLike);
+    res.status(200).send({ posts, userLike });
   })
-  .post(upload.single("file"), async (req, res) => {
+  .post(verifyToken, upload.single("file"), async (req, res) => {
     try {
-      // const userId = res.locals;
-      const { userId, content } = req.body;
+      const userId = req.user._id;
+      const { content } = req.body;
       const path = req.file.path;
       const mimetype = req.file.mimetype;
       const upload = { path, mimetype };
@@ -37,7 +41,7 @@ router
 
 router
   .route("/:postId")
-  .get(async (req, res) => {
+  .get(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
       const result = await readPost(postId);
@@ -48,7 +52,7 @@ router
       res.status(400);
     }
   })
-  .delete(async (req, res) => {
+  .delete(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
       const result = await deletePost(postId);
@@ -62,11 +66,10 @@ router
     }
   });
 
-router.route("/:postId/like").post(async (req, res) => {
+router.route("/:postId/like").post(verifyToken, async (req, res) => {
   try {
-    // const userId = res.locals;
+    const userId = req.user._id;
     const postId = req.params.postId;
-    const { userId } = req.body;
     const existLike = await existLikes({ userId, postId });
     if (!existLike) {
       await pushLikes({ userId, postId });
