@@ -1,9 +1,18 @@
 import User from "../schemas/user.js";
 
-//회원 정보
+//회원 정보(id)
 export async function findById(id) {
   try {
     return await User.findById(id);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+//회원 정보(email)
+export async function findByOne(email) {
+  try {
+    return await User.findOne({ email });
   } catch (err) {
     console.error(err);
   }
