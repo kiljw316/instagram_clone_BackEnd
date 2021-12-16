@@ -1,6 +1,6 @@
 import express from "express";
 import { addPost, readAllPost, deletePost, readDetailPost } from "../models/posts.js";
-import { pushLikes, countLikes, cancleLikes, existLikes } from "../models/likes.js";
+import { pushLikes, countLikes, cancleLikes, existLikes, userLikesPost } from "../models/likes.js";
 import { verifyToken } from "../middleware/middleware.js";
 import { upload } from "../middleware/uploads.js";
 
@@ -9,17 +9,36 @@ const router = express.Router();
 router
   .route("/")
   .get(verifyToken, async (req, res) => {
-    // const userId = req.user._id;
+    const userId = req.user._id;
+
     let posts = await readAllPost();
+    const postIdArray = [];
+    const likes = [];
     for (let i = 0; i < posts.length; i++) {
       const postId = posts[i]["_id"].toHexString();
+      postIdArray.push(postId);
       const count = await countLikes(postId);
       posts[i].likes;
       posts[i].likes = count;
+      likes[i] = false;
     }
-    // const userLike = await usersLike(userId);
-    // console.log(userLike);
-    res.status(200).send({ posts });
+
+    const userlikesPost = await userLikesPost(userId);
+    const userlikePostId = [];
+    for (let i = 0; i < userlikesPost.length; i++) {
+      const postId = userlikesPost[i].postId;
+      userlikePostId.push(postId);
+    }
+
+    for (let i = 0; i < postIdArray.length; i++) {
+      for (let j = 0; j < userlikePostId.length; j++) {
+        if (userlikePostId[j] == postIdArray[i]) {
+          likes[i] = true;
+        }
+      }
+    }
+    // console.log(likes);
+    res.status(200).send({ posts, likes });
   })
   .post(verifyToken, upload.single("file"), async (req, res) => {
     try {

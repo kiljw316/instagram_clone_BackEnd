@@ -46,3 +46,12 @@ export const countLikes = async (postId) => {
     return false;
   }
 };
+
+export const userLikesPost = async (userId) => {
+  try {
+    const result = likes.find({ userId });
+    return result;
+  } catch {
+    return false;
+  }
+};
