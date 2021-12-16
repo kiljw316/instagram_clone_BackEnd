@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import likes from "./likes.js";
+// import likes from "./likes.js";
 
 const posts = new mongoose.Schema({
   userId: {
@@ -17,6 +17,36 @@ const posts = new mongoose.Schema({
   comments: {
     type: Array,
   },
+  likes: {
+    type: Number,
+  },
+  createdAt: {
+    type: Number,
+    default: new Date().getTime(),
+  },
 });
+
+// toJSON: { virtuals: true }
+// posts.virtual("likeCount").get(function () {
+//   const postId = this._id.toHexString();
+//   const likeCount = likes.countDocuments({ postId });
+//   const likeCount = likes.countDocuments({ postId }).then((likeCount) => {
+//     const result = likeCount;
+//     console.log(result);
+//     return result;
+//   });
+//   console.log(likeCount);
+//   return 3;
+// });
+
+// async function countlikes(postId) {
+//   return await likes.countDocuments({ postId });
+// }
+
+// console.log(post);
+
+// posts.set("toJSON", {
+//   virtuals: true,
+// });
 
 export default mongoose.model("posts", posts);
