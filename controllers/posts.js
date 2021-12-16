@@ -1,6 +1,7 @@
 import express from "express";
 import { addPost, readAllPost, deletePost, readPost } from "../models/posts.js";
 import { pushLikes, readAllLikes, cancleLikes, existLikes } from "../models/likes.js";
+import { upload } from "../middleware/uploads.js";
 
 const router = express.Router();
 
@@ -10,11 +11,12 @@ router
     const posts = await readAllPost();
     res.status(200).send({ posts });
   })
-  .post(async (req, res) => {
+  .post(upload.single("file"), async (req, res) => {
     try {
       // const userId = res.locals;
       // const { content, upload } = req.body;
-      const { userId, content, upload } = req.body;
+      const { upload } = req.file;
+      const { userId, content } = req.body;
       const result = await addPost({ userId, content, upload });
       if (result !== true) {
         res.status(400).send({ msg: "게시글 작성 실패" });

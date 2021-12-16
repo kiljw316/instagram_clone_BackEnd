@@ -19,26 +19,29 @@ const posts = new mongoose.Schema(
       type: Array,
     },
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
 
-
-const post = posts.virtual("likeCount").get(async function () {
-  try {
-    const postId = this._id.toHexString();
-    return await likes.countDocuments({ postId }).exec();
-  } catch(err) {
-    cosnsole.log(err);
-  }
-  // return 1
+posts.virtual("likeCount").get(function () {
+  const postId = this._id.toHexString();
+  const likeCount = likes.countDocuments({ postId });
+  // const likeCount = likes.countDocuments({ postId }).then((likeCount) => {
+  //   const result = likeCount;
+  //   console.log(result);
+  //   return result;
+  // });
+  console.log(likeCount);
+  return 3;
 });
 
-console.log(post);
+// async function countlikes(postId) {
+//   return await likes.countDocuments({ postId });
+// }
 
-posts.set("toJSON", {
-  virtuals: true,
-});
+// console.log(post);
 
+// posts.set("toJSON", {
+//   virtuals: true,
+// });
 
 export default mongoose.model("posts", posts);
-
