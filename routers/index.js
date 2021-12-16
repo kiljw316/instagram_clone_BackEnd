@@ -12,7 +12,7 @@ const router = express.Router();
 router.use("/posts", posts);
 router.use("/posts", commentRouter);
 // router.use("/item", commentRouter);
-// router.use("/auth", userRouter);
+router.use("/auth", userRouter);
 // router.post("/image", uploader.single("image"), (req, res, next) => {
 //   res.status(201).json(req.url);
 // });
