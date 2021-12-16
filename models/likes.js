@@ -3,6 +3,7 @@ import posts from "../schemas/posts.js";
 // 좋아요 에서 필요한 api,
 // c r d
 
+// 좋아요가 존재하는지 확인하는 function
 export const existLikes = async ({ postId, userId }) => {
   try {
     const result = await likes.findOne({ postId, userId });
@@ -12,6 +13,7 @@ export const existLikes = async ({ postId, userId }) => {
   }
 };
 
+// 좋아요 생성 function
 export const pushLikes = async ({ postId, userId }) => {
   try {
     const result = await likes.create({ postId, userId });
@@ -21,6 +23,7 @@ export const pushLikes = async ({ postId, userId }) => {
   }
 };
 
+// 좋아요 삭제 function
 export const cancleLikes = async ({ postId, userId }) => {
   try {
     const result = await likes.deleteOne({ postId, userId });
@@ -33,41 +36,12 @@ export const cancleLikes = async ({ postId, userId }) => {
   }
 };
 
+// 좋아요 삭제해주는 function
 export const countLikes = async (postId) => {
   try {
     const allLikes = await likes.find({ postId });
     const result = allLikes.length;
     return result;
-  } catch {
-    return false;
-  }
-};
-
-export const usersLike = async (userId) => {
-  try {
-    const postIdArray = [];
-    const allBoards = await posts.find({});
-    for (let i = 0; i < allBoards.length; i++) {
-      const findPostId = allBoards[i]._id.toHexString();
-      postIdArray.push(findPostId);
-    }
-    // console.log(postIdArray);
-    const userLikeArray = [];
-    const allLikes = await likes.find({ userId });
-    // console.log(allLikes.postId);
-    for (let i = 0; i < postIdArray.length; i++) {
-      for (let j = 0; j < allLikes.length; j++) {
-        if (postIdArray[i] == allLikes[i].postId) {
-          userLikeArray.push(true);
-          break;
-        } else {
-          userLikeArray.push(false);
-          break;
-        }
-      }
-    }
-    console.log(userLikeArray);
-    return userLikeArray;
   } catch {
     return false;
   }

@@ -1,6 +1,6 @@
 import express from "express";
-import { addPost, readAllPost, deletePost, readPost } from "../models/posts.js";
-import { pushLikes, countLikes, cancleLikes, existLikes, usersLike } from "../models/likes.js";
+import { addPost, readAllPost, deletePost, readDetailPost } from "../models/posts.js";
+import { pushLikes, countLikes, cancleLikes, existLikes } from "../models/likes.js";
 import { verifyToken } from "../middleware/middleware.js";
 import { upload } from "../middleware/uploads.js";
 
@@ -8,9 +8,8 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(async (req, res) => {
+  .get(verifyToken, async (req, res) => {
     // const userId = req.user._id;
-    const userId = "test4";
     let posts = await readAllPost();
     for (let i = 0; i < posts.length; i++) {
       const postId = posts[i]["_id"].toHexString();
@@ -18,9 +17,9 @@ router
       posts[i].likes;
       posts[i].likes = count;
     }
-    const userLike = await usersLike(userId);
+    // const userLike = await usersLike(userId);
     // console.log(userLike);
-    res.status(200).send({ posts, userLike });
+    res.status(200).send({ posts });
   })
   .post(verifyToken, upload.single("file"), async (req, res) => {
     try {
@@ -44,7 +43,7 @@ router
   .get(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
-      const result = await readPost(postId);
+      const result = await readDetailPost(postId);
       const count = await countLikes(postId);
       result.likes = count;
       res.status(200).send({ result });
