@@ -3,6 +3,11 @@ import path from "path/posix";
 import router from "./routers/index.js";
 import passportConfig from "./passport/index.js";
 import passport from "passport";
+import cors from "cors";
+// const corsOptions = {
+//   origin: "Eco_funding domain",
+//   optionsSuccessStatus: 200,
+// };
 
 const app = express();
 const __dirname = path.resolve();
@@ -13,6 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 passportConfig();
 app.use(passport.initialize());
 
+app.use(cors())
 app.use("/api", router);
 app.use(express.static(path.join(__dirname, "static")));
 

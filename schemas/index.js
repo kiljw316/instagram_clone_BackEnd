@@ -11,8 +11,8 @@ export function connect() {
 
   //AWS 연결할때는 수정해야함.
   mongoose
-    // .connect("mongodb://admin:password@localhost:27017/admin", {
-      .connect("mongodb://localhost:27017/insta-clone", {
+    .connect("mongodb://admin:password@localhost:27017/admin", {
+      // .connect("mongodb://localhost:27017/insta-clone", {
       //   useNewUrlParser: true,
       //   useUnifiedTopology: true,
       //   ignoreUndefined: true,
