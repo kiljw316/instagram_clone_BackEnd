@@ -1,6 +1,6 @@
 import Comment from "../schemas/comment.js";
 import Post from "../schemas/post.js";
-import User from "../schemas/user.js";
+// import User from "../schemas/user.js";
 import { objectIdChange } from "../utils/typeChange.js";
 
 export async function getUserId(commentId) {
@@ -19,7 +19,7 @@ export async function get(postId) {
   //    ex) await getByPostId(postId)
   try {
     const post = await Post.findById(postId).exec();
-    return post.comments;
+    return post.comments
   } catch (error) {
     console.log(error);
     throw new Error(error);
@@ -37,22 +37,22 @@ export async function create({ postId, commentObj }) {
 }
 
 export async function remove({ postId, commentId }) {
-  //   try {
-  //     const post = await Post.findById(postId);
-  //     console.log(post);
-  //     return post.comments.pull({ comment: "comment1" });
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
+    // try {
+    //   const post = await Post.findById(postId);
+    //   console.log(post)
+    //   return post.comments.pull(commentId);
+    // } catch (error) {
+    //   throw new Error(error);
+    // }
   //   //   되는 케이스
-  //   try {
-  //     return Post.updateOne(
-  //       { _id: postId },
-  //       { $pull: { comments: { _id: new mongoose.mongo.ObjectId(commentId) } } }
-  //     ).exec();
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
+    // try {
+    //   return Post.updateOne(
+    //     { _id: objectIdChange(postId) },
+    //     { $pull: { comments: { _id: objectIdChange(commentId) } } }
+    //   );
+    // } catch (error) {
+    //   throw new Error(error);
+    // }
   try {
     return Post.findOneAndUpdate(
       { _id: postId },
@@ -60,7 +60,7 @@ export async function remove({ postId, commentId }) {
         //   type변경 안하는 방법 없나
         $pull: { comments: { _id: objectIdChange(commentId) } },
       }
-    );
+    )
   } catch (error) {
     throw new Error(error);
   }

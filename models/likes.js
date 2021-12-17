@@ -1,5 +1,5 @@
 import likes from "../schemas/likes.js";
-import posts from "../schemas/posts.js";
+// import posts from "../schemas/post.js";
 // 좋아요 에서 필요한 api,
 // c r d
 
