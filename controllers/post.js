@@ -45,7 +45,8 @@ router
       const userId = req.user._id;
       const nickname = req.user.nickname;
       const { content } = req.body;
-      const path = req.file.path;
+      const imagePath = req.file.path.split("/")[1];
+      const path = `http://13.209.4.79/${imagePath}`;
       const mimetype = req.file.mimetype;
       const upload = { path, mimetype };
       const result = await addPost({ userId, nickname, content, upload });
