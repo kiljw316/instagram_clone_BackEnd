@@ -3,8 +3,8 @@ import * as commentRepository from "../models/comment.js";
 export async function createComment(req, res, next) {
   const { postId } = req.params;
   const { comment } = req.body;
-  const userId = req.user._id;
-  const commentObj = { comment, userId };
+  const {_id, nickname} = req.user;
+  const commentObj = { comment, userId:_id, nickname };
   try {
     await commentRepository.create({ postId, commentObj });
     const msg = "댓글 작성 완료";

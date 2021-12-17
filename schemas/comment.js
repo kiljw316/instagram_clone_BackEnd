@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 const commentSchema = new mongoose.Schema({
   comment: { type: String, required: true },
   userId: { type: String, required: true },
+  nickname: {type: String, required: true},
   createdAt: { type: Number, default: Date.now },
 });
 //
