@@ -59,18 +59,26 @@ router
   });
 
 router
+// detail page
   .route("/:postId")
   .get(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
+      const userId = req.user._id;
       const result = await readDetailPost(postId);
       const count = await countLikes(postId);
       result.likes = count;
-      res.status(200).send({ result });
+      const likeBoard = await existLikes({ postId, userId });
+      let likes = true;
+      if(!likeBoard) {
+        likes = false;
+      }
+      res.status(200).send({ result, likes });
     } catch {
       res.status(400);
     }
   })
+
   .post(verifyToken, async (req, res) => {
     try {
       const postId = req.params.postId;
