@@ -37,13 +37,13 @@ export async function create({ postId, commentObj }) {
 }
 
 export async function remove({ postId, commentId }) {
-  //   try {
-  //     const post = await Post.findById(postId);
-  //     console.log(post);
-  //     return post.comments.pull({ comment: "comment1" });
-  //   } catch (error) {
-  //     throw new Error(error);
-  //   }
+    // try {
+    //   const post = await Post.findById(postId);
+    //   console.log(post)
+    //   return post.comments.pull(commentId);
+    // } catch (error) {
+    //   throw new Error(error);
+    // }
   //   //   되는 케이스
     // try {
     //   return Post.updateOne(
