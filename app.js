@@ -20,11 +20,12 @@ app.use((req, res, next) => {
   res.sendStatus(404);
 });
 app.use((error, req, res, next) => {
-  return res.status(error.status).json({
-    code: error.status,
-    msg: error.message,
-  });
-  // res.sendStatus(500);
+  // return res.status(error.status).json({
+  //   code: error.status,
+  //   msg: error.message,
+  // });
+  console.log(error)
+  res.sendStatus(500);
 });
 
 export default app;
