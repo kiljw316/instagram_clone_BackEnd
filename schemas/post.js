@@ -1,15 +1,56 @@
 import mongoose from "mongoose";
+// import likes from "./likes.js";
 
-//comment schema definition
-const postSchema = new mongoose.Schema(
-  {
-    content: { type: String, required: true },
-    userId: { type: String, required: true },
-    comments: { type: Array },
+const postSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
   },
-  { timestamps: true }
-);
-//
+  nickname: {
+    type: String,
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  upload: {
+    type: Array,
+    required: true,
+  },
+  comments: {
+    type: Array,
+  },
+  likes: {
+    type: Number,
+  },
+  createdAt: {
+    type: Number,
+    default: Date.now,
+  },
+});
 
-//To use our schema definition, we need to convert our schema into a Model we can work with.
+// toJSON: { virtuals: true }
+// postSchema.virtual("likeCount").get(function () {
+//   const postId = this._id.toHexString();
+//   const likeCount = likes.countDocuments({ postId });
+//   const likeCount = likes.countDocuments({ postId }).then((likeCount) => {
+//     const result = likeCount;
+//     console.log(result);
+//     return result;
+//   });
+//   console.log(likeCount);
+//   return 3;
+// });
+
+// async function countlikes(postId) {
+//   return await likes.countDocuments({ postId });
+// }
+
+// console.log(post);
+
+// postSchema.set("toJSON", {
+//   virtuals: true,
+// });
+
 export default mongoose.model("Post", postSchema);

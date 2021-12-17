@@ -33,7 +33,8 @@ export async function deleteComment(req, res, next) {
     if (userId !== userIdFromComment) {
       return res.sendStatus(500);
     }
-    await commentRepository.remove({ postId, commentId });
+    const a = await commentRepository.remove({ postId, commentId });
+    console.log(a)
     return res.sendStatus(204);
   } catch (error) {
     console.log(error);
