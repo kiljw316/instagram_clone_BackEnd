@@ -6,6 +6,10 @@ const posts = new mongoose.Schema({
     type: String,
     required: true,
   },
+  nickname: {
+    type: String,
+    required: true,
+  },
   content: {
     type: String,
     required: true,

@@ -1,9 +1,9 @@
 import posts from "../schemas/posts.js";
 
 // 게시글 작성 function
-export const addPost = async ({ userId, content, upload, createdAt }) => {
+export const addPost = async ({ userId, content, upload, nickname }) => {
   try {
-    await posts.create({ userId, content, upload, createdAt });
+    await posts.create({ userId, content, upload, nickname });
     return true;
   } catch {
     return false;
@@ -12,7 +12,7 @@ export const addPost = async ({ userId, content, upload, createdAt }) => {
 
 // 게시글 조회 function
 export const readAllPost = async () => {
-  const result = await posts.find({});
+  const result = await posts.find({}).sort({_id: -1});
   return result;
 };
 

@@ -43,11 +43,12 @@ router
   .post(verifyToken, upload.single("file"), async (req, res) => {
     try {
       const userId = req.user._id;
+      const nickname = req.user.nickname;
       const { content } = req.body;
       const path = req.file.path;
       const mimetype = req.file.mimetype;
       const upload = { path, mimetype };
-      const result = await addPost({ userId, content, upload });
+      const result = await addPost({ userId, nickname, content, upload });
       if (result !== true) {
         res.status(400).send({ msg: "게시글 작성 실패" });
       }
