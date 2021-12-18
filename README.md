@@ -9,8 +9,9 @@
 
 ## 깃허브 주소
 
-[프론트 엔드]()
-[백엔드](https://github.com/kiljw316/instagram_clone_BackEnd/tree/main)
+[Front-End]()
+
+[Back-End](https://github.com/kiljw316/instagram_clone_BackEnd/tree/main)
 
 ## 🥇 Developers
 
